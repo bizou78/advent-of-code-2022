@@ -2,8 +2,7 @@ package day01
 
 import (
 	"testing"
-
-	"github.com/shpikat/advent-of-code-2022/internal"
+	"github.com/bizou78/advent-of-code-2022/internal"
 )
 
 const (

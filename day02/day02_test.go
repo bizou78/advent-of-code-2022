@@ -2,8 +2,7 @@ package day02
 
 import (
 	"testing"
-
-	"github.com/shpikat/advent-of-code-2022/internal"
+	"github.com/bizou78/advent-of-code-2022/internal"
 )
 
 const (
@@ -14,10 +13,10 @@ C Z
 `
 
 	part1Sample = 15
-	part1Answer = 17189
+	part1Answer = 13009
 
 	part2Sample = 12
-	part2Answer = 13490
+	part2Answer = 10398
 )
 
 func TestPart1(t *testing.T) {

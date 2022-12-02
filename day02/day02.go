@@ -1,95 +1,87 @@
 package day02
 
 import (
-	"fmt"
 	"strings"
 )
 
-type Shape int
-
-func (s Shape) score() int {
-	return int(s)
-}
-
-const (
-	None     Shape = 0
-	Rock     Shape = 1
-	Paper    Shape = 2
-	Scissors Shape = 3
-)
-
 var (
-	firstColumnCodes = map[string]Shape{
-		"A": Rock,
-		"B": Paper,
-		"C": Scissors,
+	mapShape = map[string]string{
+		"A": "rock",
+		"B": "paper",
+		"C": "scissors",
+		"X": "rock",
+		"Y": "paper",
+		"Z": "scissors",
 	}
-	beaters = [4]Shape{None, Paper, Scissors, Rock}
-	losers  = [4]Shape{None, Scissors, Rock, Paper}
+
+	mapValue = map[string]int{
+		"rock":     1,
+		"paper":    2,
+		"scissors": 3,
+	}
+
+	winningMap = map[string]string{
+		"rock":     "scissors",
+		"paper":    "rock",
+		"scissors": "paper",
+	}
+
+	losingMap = map[string]string{
+		"rock":     "paper",
+		"paper":    "scissors",
+		"scissors": "rock",
+	}
 )
 
 func part1(input string) (int, error) {
-	secondColumnCodes := map[string]Shape{
-		"X": Rock,
-		"Y": Paper,
-		"Z": Scissors,
+	rounds := strings.Split(strings.TrimSpace(input), "\n")
+
+	myPoint := 0
+
+	for _, round := range rounds {
+		elements := strings.Split(round, " ")
+
+		ennemyShape := mapShape[elements[0]]
+
+		myShape := mapShape[elements[1]]
+		myValue := mapValue[myShape]
+		myPoint += myValue
+
+		if ennemyShape == myShape {
+			myPoint += 3
+		} else if winningMap[myShape] == ennemyShape {
+			myPoint += 6
+		}
+
 	}
-
-	score := 0
-
-	lines := strings.Split(strings.TrimSpace(input), "\n")
-	for _, line := range lines {
-		first, second, ok := strings.Cut(line, " ")
-		if !ok {
-			return 0, fmt.Errorf("unexpected format: %s", line)
-		}
-		opponent, ok := firstColumnCodes[first]
-		if !ok {
-			return 0, fmt.Errorf("expecting only A, B or C, got: %s", first)
-		}
-		you, ok := secondColumnCodes[second]
-		if !ok {
-			return 0, fmt.Errorf("expecting only X, Y or Z, got: %s", second)
-		}
-		score += you.score()
-		if opponent == you {
-			score += 3
-		} else if beaters[opponent] == you {
-			score += 6
-		}
-	}
-
-	return score, nil
+	return myPoint, nil
 }
 
 func part2(input string) (int, error) {
-	score := 0
+	rounds := strings.Split(strings.TrimSpace(input), "\n")
+	var myShape string
 
-	lines := strings.Split(strings.TrimSpace(input), "\n")
-	for _, line := range lines {
-		first, second, ok := strings.Cut(line, " ")
-		if !ok {
-			return 0, fmt.Errorf("unexpected format: %s", line)
-		}
-		opponent, ok := firstColumnCodes[first]
-		if !ok {
-			return 0, fmt.Errorf("expecting only A, B or C, got: %s", first)
-		}
-		var you Shape
-		switch second {
+	myPoint := 0
+
+	for _, round := range rounds {
+		elements := strings.Split(round, " ")
+
+		ennemyShape := mapShape[elements[0]]
+
+		switch elements[1] {
 		case "X":
-			you = losers[opponent]
+			myShape = winningMap[ennemyShape]
 		case "Y":
-			you = opponent
-			score += 3
+			myShape = ennemyShape
+			myPoint += 3
 		case "Z":
-			you = beaters[opponent]
-			score += 6
-		default:
-			return 0, fmt.Errorf("expecting only X, Y or Z, got: %s", second)
+			myShape = losingMap[ennemyShape]
+			myPoint += 6
 		}
-		score += you.score()
+
+		myPoint += mapValue[myShape]
+
 	}
 
-	return score, nil
+	return myPoint, nil
 }
