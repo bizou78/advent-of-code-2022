@@ -23,7 +23,7 @@ move 1 from 1 to 2
 	part1Answer = "BZLVHBWQF"
 
 	part2Sample = "MCD"
-	part2Answer = "BMLP"
+	part2Answer = "TDGJQTZSL"
 )
 
 func TestPart1(t *testing.T) {

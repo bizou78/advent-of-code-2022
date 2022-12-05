@@ -121,7 +121,7 @@ func part2(input string) (string, error) {
 			numberOfKeys = strings.TrimSpace(uniqueLine)
 		}
 	}
-	fmt.Println("Stock before : ", stock)
+
 	// INSTRUCTIONS
 	instructionLines := strings.Split(lines[1], "\n")
 	for _, instruction := range instructionLines {
@@ -135,7 +135,7 @@ func part2(input string) (string, error) {
 			stock[from] = stock[from][quantity:]
 		}
 	}
-	fmt.Println("Stock after : ", stock)
+
 	for _, ch := range numberOfKeys {
 
 		if ch >= 49 && ch <= 57 {
