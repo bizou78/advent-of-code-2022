@@ -1,4 +1,4 @@
-package day07
+package day08
 
 import (
 	"testing"
@@ -8,36 +8,18 @@ import (
 
 const (
 	sample1 = `
-$ cd /
-$ ls
-dir a
-14848514 b.txt
-8504156 c.dat
-dir d
-$ cd a
-$ ls
-dir e
-29116 f
-2557 g
-62596 h.lst
-$ cd e
-$ ls
-584 i
-$ cd ..
-$ cd ..
-$ cd d
-$ ls
-4060174 j
-8033020 d.log
-5626152 d.ext
-7214296 k
+30373
+25512
+65332
+33549
+35390
 `
 
-	part1Sample = 95437
-	part1Answer = 1490523
+	part1Sample = 21
+	part1Answer = 1796
 
-	part2Sample = 24933642
-	part2Answer = 12390492
+	part2Sample = 8
+	part2Answer = 288120
 )
 
 func TestPart1(t *testing.T) {
