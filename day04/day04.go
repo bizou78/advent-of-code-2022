@@ -7,7 +7,8 @@ import (
 
 func part1(input string) (int, error) {
 
-	var total int
+	total := 0
+
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
 	for _, line := range lines {

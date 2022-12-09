@@ -66,7 +66,7 @@ func TestPart2(t *testing.T) {
 		want  int
 	}{
 		{"sample 2", sample2, part2Sample},
-		// {"puzzle input", internal.ReadInput(t, "./testdata/input.txt"), part2Answer},
+		{"puzzle input", internal.ReadInput(t, "./testdata/input.txt"), part2Answer},
 	}
 
 	for _, tc := range testCases {

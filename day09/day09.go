@@ -11,68 +11,31 @@ func part1(input string) (int, error) {
 
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
-	var currentTail image.Point
-	var currentHead image.Point
-
-	tailMap := []image.Point{}
-
-	tailMap = append(tailMap, currentTail)
+	rope := make([]image.Point, 2)
+	part1 := map[image.Point]struct{}{}
+	dirs := map[rune]image.Point{'U': {0, -1}, 'R': {1, 0}, 'D': {0, 1}, 'L': {-1, 0}}
 
 	for _, line := range lines {
-		var direction string
+		var direction rune
 		var quantity int
 
-		fmt.Sscanf(line, "%s %d", &direction, &quantity)
+		fmt.Sscanf(line, "%c %d", &direction, &quantity)
+
+		move := dirs[direction]
 
 		for i := 0; i < quantity; i++ {
-
-			switch direction {
-
-			case "R":
-				tmpCurrentHead := currentHead
-				currentHead = image.Point{currentHead.X + 1, currentHead.Y}
-				if currentHead.X-currentTail.X > 1 {
-					currentTail = tmpCurrentHead
+			rope[0] = rope[0].Add(move)
+			for i := 1; i < len(rope); i++ {
+				diff := rope[i-1].Sub(rope[i])
+				if abs(diff.X) > 1 || abs(diff.Y) > 1 {
+					rope[i] = rope[i].Add(image.Point{sgn(diff.X), sgn(diff.Y)})
 				}
-				break
-
-			case "L":
-				tmpCurrentHead := currentHead
-				currentHead = image.Point{currentHead.X - 1, currentHead.Y}
-				if currentTail.X-currentHead.X > 1 {
-					currentTail = tmpCurrentHead
-				}
-				break
-
-			case "U":
-				tmpCurrentHead := currentHead
-				currentHead = image.Point{currentHead.X, currentHead.Y + 1}
-				if currentHead.Y-currentTail.Y > 1 {
-					currentTail = tmpCurrentHead
-				}
-				break
-
-			case "D":
-				tmpCurrentHead := currentHead
-				currentHead = image.Point{currentHead.X, currentHead.Y - 1}
-				if currentHead.Y-currentTail.Y < -1 {
-					currentTail = tmpCurrentHead
-				}
-				break
+				part1[rope[1]] = struct{}{}
 			}
-
-			tailMap = append(tailMap, currentTail)
 		}
-
 	}
 
-	uniqueMap := map[image.Point]int{}
-
-	for _, pair := range tailMap {
-		uniqueMap[pair] = 1
-	}
-
-	result = len(uniqueMap)
+	result = len(part1)
 
 	return result, nil
 }
@@ -82,32 +45,35 @@ func part2(input string) (int, error) {
 
 	lines := strings.Split(strings.TrimSpace(input), "\n")
 
-	dirs := map[rune]image.Point{'U': {0, -1}, 'R': {1, 0}, 'D': {0, 1}, 'L': {-1, 0}}
 	rope := make([]image.Point, 10)
-
 	part2 := map[image.Point]struct{}{}
+	dirs := map[rune]image.Point{'U': {0, -1}, 'R': {1, 0}, 'D': {0, 1}, 'L': {-1, 0}}
 
-	for _, s := range lines {
-		var dir rune
-		var steps int
-		fmt.Sscanf(s, "%c %d", &dir, &steps)
+	for _, line := range lines {
+		var direction rune
+		var quantity int
 
-		for i := 0; i < steps; i++ {
-			rope[0] = rope[0].Add(dirs[dir])
+		fmt.Sscanf(line, "%c %d", &direction, &quantity)
 
+		move := dirs[direction]
+
+		for i := 0; i < quantity; i++ {
+			rope[0] = rope[0].Add(move)
 			for i := 1; i < len(rope); i++ {
-				if d := rope[i-1].Sub(rope[i]); abs(d.X) > 1 || abs(d.Y) > 1 {
-					rope[i] = rope[i].Add(image.Point{sgn(d.X), sgn(d.Y)})
+				diff := rope[i-1].Sub(rope[i])
+				if abs(diff.X) > 1 || abs(diff.Y) > 1 {
+					rope[i] = rope[i].Add(image.Point{sgn(diff.X), sgn(diff.Y)})
 				}
+				part2[rope[len(rope)-1]] = struct{}{}
 			}
-			part2[rope[len(rope)-1]] = struct{}{}
 		}
 	}
+
 	result = len(part2)
 
 	return result, nil
-
 }
+
 func abs(x int) int {
 	if x < 0 {
 		return -x
